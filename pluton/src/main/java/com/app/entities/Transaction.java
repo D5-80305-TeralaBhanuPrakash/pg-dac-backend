@@ -2,6 +2,8 @@ package com.app.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -36,7 +40,12 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
+    
+    @ManyToMany // mandatory
+	// optional BUT recommended
+	@JoinTable(name = "transaction_loan", joinColumns = @JoinColumn(name = "transaction_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "loan_application_id", nullable = false))
+    private List<LoanApplication> applications = new ArrayList<>();
+    
     @Column(name = "transactionType")
     private String transactionType;
 
@@ -56,7 +65,16 @@ public class Transaction {
     private String transactionCategory;
     
     
-    
+    //helper methods
+//    public void addLoanApplication(LoanApplication loanAppl) {
+//    	applications.add(loanAppl);
+//		loanAppl.getProjects().add(this);
+//	}
+//    
+//    public void removeEmployee(LoanApplication loanAppl) {
+//    	applications.remove(emp);
+//		emp.getProjects().remove(this);
+//	}
     
     
     
