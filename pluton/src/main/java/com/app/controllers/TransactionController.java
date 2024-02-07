@@ -31,9 +31,14 @@ public class TransactionController {
 	}
 	
 	//Method to get all transactions of a specific customer
-	@GetMapping("get/{custId}")
+	@GetMapping("custom/{custId}")
 	public List<TransactionDTO> getAllTransactionOfCustomer(@PathVariable Integer custId){
 		return transacService.getAllTransactionOfCustomer(custId);
+	}
+	
+	@GetMapping("appl/{applId}")
+	public List<TransactionDTO> getAllTransactionOfLoan(@PathVariable Integer applId){
+		return transacService.getAllTransactionOfLoan(applId);
 	}
 	
 	

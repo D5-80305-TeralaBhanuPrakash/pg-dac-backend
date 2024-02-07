@@ -60,7 +60,7 @@ public class Customer {
     private boolean status;
     
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL,orphanRemoval=true)
-    private List<LoanApplication> loanApplications;
+    private List<LoanApplication> loanApplications = new ArrayList<>();
     
     
 //    @OneToMany(mappedBy = "customer", 

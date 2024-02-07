@@ -59,4 +59,12 @@ public class TransactionServiceImpl implements TransactionService{
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<TransactionDTO> getAllTransactionOfLoan(Integer applId) {
+		// TODO Auto-generated method stub
+		return transacDao.findByApplicationId(applId).stream()
+				.map(transac -> mapper.map(transac, TransactionDTO.class))
+				.collect(Collectors.toList());
+	}
+
 }

@@ -36,4 +36,11 @@ public class CustomerServiceImpl implements CustomerService {
 		return mapper.map(cust, CustomerDTO.class);
 	}
 
+	@Override
+	public CustomerDTO getCustomerDetails(Integer custId) {
+		Customer cust = custDao.findById(custId).orElseThrow();
+		// TODO Auto-generated method stub
+		return mapper.map(cust, CustomerDTO.class);
+	}
+
 }

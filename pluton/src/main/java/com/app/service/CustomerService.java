@@ -11,5 +11,6 @@ public interface CustomerService {
 
 	CustomerDTO addCustomer(CustomerDTO cust);
 	
+	CustomerDTO getCustomerDetails(Integer custId);
 
 }

@@ -42,8 +42,9 @@ public class CustomerDTO {
 	private String password;
    
     private String phoneNumber;
-
+    @JsonProperty(access =Access.WRITE_ONLY)
     private LocalDate registrationDate;
     
+    @JsonProperty(access =Access.WRITE_ONLY)
     private boolean status;
 }

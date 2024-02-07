@@ -12,4 +12,5 @@ public interface TransactionService {
 
 	List<TransactionDTO> getAllTransactionOfCustomer(Integer custId);
 
+	List<TransactionDTO> getAllTransactionOfLoan(Integer applId);
 }
