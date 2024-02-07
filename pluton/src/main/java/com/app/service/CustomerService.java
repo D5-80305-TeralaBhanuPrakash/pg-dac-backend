@@ -7,7 +7,7 @@ import com.app.entities.Customer;
 
 public interface CustomerService {
 
-	List<Customer> getAllCustomers();
+	List<CustomerDTO> getAllCustomers();
 
 	CustomerDTO addCustomer(CustomerDTO cust);
 	

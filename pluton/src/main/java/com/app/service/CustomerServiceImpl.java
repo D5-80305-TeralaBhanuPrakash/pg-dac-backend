@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,10 @@ public class CustomerServiceImpl implements CustomerService {
 	private ModelMapper mapper;
 	
 	@Override
-	public List<Customer> getAllCustomers() {
+	public List<CustomerDTO> getAllCustomers() {
 		// TODO Auto-generated method stub
-		return custDao.findAll();
+		return custDao.findAll().stream().map(cust->mapper.map(cust, CustomerDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override

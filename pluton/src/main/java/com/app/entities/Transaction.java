@@ -34,11 +34,11 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transactionID")
-    private int transactionID;
+    @Column(name = "transactionId")
+    private int transactionId;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customerId")
     private Customer customer;
     
     @ManyToMany // mandatory
@@ -66,15 +66,13 @@ public class Transaction {
     
     
     //helper methods
-//    public void addLoanApplication(LoanApplication loanAppl) {
-//    	applications.add(loanAppl);
-//		loanAppl.getProjects().add(this);
-//	}
-//    
-//    public void removeEmployee(LoanApplication loanAppl) {
-//    	applications.remove(emp);
-//		emp.getProjects().remove(this);
-//	}
+    public void addLoanApplication(LoanApplication loanAppl) {
+    	applications.add(loanAppl);
+	}
+    
+    public void removeEmployee(LoanApplication loanAppl) {
+    	applications.remove(loanAppl);
+	}
     
     
     

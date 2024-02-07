@@ -3,9 +3,22 @@ package com.app.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Getter
+@Setter
+@ToString
 public class TransactionDTO {
+	
+	@JsonProperty(access = Access.READ_ONLY)
+	private Integer transactionId;
+	
 	private String transactionType;
 
     
@@ -22,4 +35,7 @@ public class TransactionDTO {
 
     
     private String transactionCategory;
+    
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private Integer applicationId;
 }
