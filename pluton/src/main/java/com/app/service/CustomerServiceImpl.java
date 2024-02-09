@@ -43,4 +43,10 @@ public class CustomerServiceImpl implements CustomerService {
 		return mapper.map(cust, CustomerDTO.class);
 	}
 
+	@Override
+	public CustomerDTO loginCustomer(String email, String password) {
+		Customer cust = custDao.findCustomerByEmailAndPassword(email,password);
+		return mapper.map(cust, CustomerDTO.class);
+	}
+
 }

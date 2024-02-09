@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.CustomerDTO;
@@ -26,7 +27,7 @@ public class CustomerController {
 		
 	}
 	
-	@GetMapping
+	@GetMapping("/admin/all")
 	public List<CustomerDTO> listAllCustomers(){
 		return custService.getAllCustomers();
 	}
@@ -40,6 +41,11 @@ public class CustomerController {
 	@PostMapping
 	public CustomerDTO addCustomer(@RequestBody CustomerDTO custDto) {
 		return custService.addCustomer(custDto);
+	}
+	
+	@PostMapping("/login")
+	public CustomerDTO loginCustomer(@RequestParam String email, @RequestParam String password) {
+		return custService.loginCustomer(email,password);
 	}
 	
 	

@@ -13,4 +13,6 @@ public interface CustomerService {
 	
 	CustomerDTO getCustomerDetails(Integer custId);
 
+	CustomerDTO loginCustomer(String email, String password);
+
 }
