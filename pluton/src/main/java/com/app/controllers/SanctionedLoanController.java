@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,13 +43,13 @@ public class SanctionedLoanController {
 		return sancLoanService.sortByAmountDisbursed(custId);
 	}
 	
-	@GetMapping("/admin")
+	@GetMapping("/admin/all")
 	public List<SanctionedLoanDTO> getAllSanctionedLoans(){
 		return sancLoanService.getAllSanctionedLoans();
 	}
 	
 	//url -> http://localhost:8080/admin/all?page=0&size=10
-	@GetMapping("/admin/all")
+	@GetMapping("/admin/page")
     public ResponseEntity<List<SanctionedLoanDTO>> getAllSanctionedLoans(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
@@ -56,6 +57,11 @@ public class SanctionedLoanController {
         List<SanctionedLoanDTO> sanctionedLoanDTOs = sancLoanService.getAllSanctionedLoans(page, size);
         return ResponseEntity.ok(sanctionedLoanDTOs);
     }
+	
+	@PutMapping("/{applId}")
+	public SanctionedLoanDTO updateSanctionedLoan(@PathVariable Integer applId, @RequestBody SanctionedLoanDTO sancLoanDto) {
+		return sancLoanService.updateSanctionedLoan(applId,sancLoanDto);
+	}
 	
 	
 	

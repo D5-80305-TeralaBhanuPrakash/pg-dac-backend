@@ -1,7 +1,10 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO addCustomer(CustomerDTO custDto) {
+		custDto.setRegistrationDate(LocalDate.now());
+		custDto.setStatus(true);
 		Customer cust = custDao.save(mapper.map(custDto, Customer.class));
 		return mapper.map(cust, CustomerDTO.class);
 	}
@@ -47,6 +52,48 @@ public class CustomerServiceImpl implements CustomerService {
 	public CustomerDTO loginCustomer(String email, String password) {
 		Customer cust = custDao.findCustomerByEmailAndPassword(email,password);
 		return mapper.map(cust, CustomerDTO.class);
+	}
+
+	@Override
+	public CustomerDTO editCustomer(Integer custId, CustomerDTO custDto) {
+	    // Find the customer by ID or throw EntityNotFoundException
+	    Customer cust = custDao.findById(custId)
+	                          .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + custId));
+
+	    // Map the fields from CustomerDTO to Customer
+	    // Assuming 'mapper' is a properly configured mapper object
+	    mapper.map(custDto, cust);
+
+	    // Set the customer ID (assuming it's not part of the DTO)
+	    cust.setCustomerId(custId);
+
+	    // Save the updated customer and return its DTO representation
+	    return mapper.map(custDao.save(cust), CustomerDTO.class);
+	}
+
+	@Override
+	public String deleteCustomer(Integer custId) {
+		Customer cust = custDao.findById(custId)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + custId));
+		custDao.delete(cust);
+		return "Deleted Successfully";
+	}
+
+	@Override
+	public List<CustomerDTO> getCustomersSortedByRegistrationDateAsc() {
+		List<Customer> custList = custDao.findAllByOrderByRegistrationDateAsc();
+		return custList.stream()
+				.map(cust -> mapper.map(cust, CustomerDTO.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<CustomerDTO> getCustomersSortedByRegistrationDateDesc() {
+		List<Customer> custList = custDao.findAllByOrderByRegistrationDateDesc();
+		return custList.stream()
+				.map(cust -> mapper.map(cust, CustomerDTO.class))
+				.collect(Collectors.toList());
+		
 	}
 
 }

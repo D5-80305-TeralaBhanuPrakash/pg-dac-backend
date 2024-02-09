@@ -95,5 +95,15 @@ public class SanctionedLoanServiceImpl implements SanctionedLoanService{
                 .map(sancLoan -> mapper.map(sancLoan, SanctionedLoanDTO.class))
                 .collect(Collectors.toList());
     }
+
+	@Override
+	public SanctionedLoanDTO updateSanctionedLoan(Integer applId, SanctionedLoanDTO sancLoanDto) {
+		SanctionedLoan sancLoan = sancDao.findById(applId).orElseThrow();
+		mapper.map(sancLoanDto, sancLoan);
+		sancLoan.setLoanDetailsId(applId);
+		
+		
+		return mapper.map(sancDao.save(sancLoan), SanctionedLoanDTO.class);
+	}
 	
 }

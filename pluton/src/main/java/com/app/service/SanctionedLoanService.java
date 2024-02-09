@@ -15,4 +15,6 @@ public interface SanctionedLoanService {
 	List<SanctionedLoanDTO> getAllSanctionedLoans();
 	
 	List<SanctionedLoanDTO> getAllSanctionedLoans(int page, int size);
+
+	SanctionedLoanDTO updateSanctionedLoan(Integer applId, SanctionedLoanDTO sancLoanDto);
 }
