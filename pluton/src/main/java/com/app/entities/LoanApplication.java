@@ -3,6 +3,7 @@ package com.app.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class LoanApplication {
     @Column(name = "LoanApplicationId")
     private Integer loanApplicationId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerId",nullable=false)
     private Customer customer;
 

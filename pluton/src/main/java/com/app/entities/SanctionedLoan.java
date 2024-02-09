@@ -3,11 +3,14 @@ package com.app.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -32,7 +35,9 @@ public class SanctionedLoan {
     @Column(name = "LoanDetailsId")
     private Integer loanDetailsId;
 
-    @OneToOne(mappedBy = "loanDetails")
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval=true)
+    @JoinColumn(name="loanApplicationId")
+    @MapsId
     private LoanApplication loanApplication;
 
     @Column(name = "loanTenureMonths")

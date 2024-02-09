@@ -2,17 +2,14 @@ package com.app.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -37,14 +34,14 @@ public class Transaction {
     @Column(name = "transactionId")
     private int transactionId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customerId")
     private Customer customer;
     
-    @ManyToMany // mandatory
+    @ManyToOne(cascade = CascadeType.ALL) // mandatory
 	// optional BUT recommended
-	@JoinTable(name = "transaction_loan", joinColumns = @JoinColumn(name = "transaction_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "loan_application_id", nullable = false))
-    private List<LoanApplication> applications = new ArrayList<>();
+	@JoinColumn(name="applicationId")
+    private LoanApplication loanAppl;
     
     @Column(name = "transactionType")
     private String transactionType;
@@ -63,20 +60,5 @@ public class Transaction {
 
     @Column(name = "transactionCategory")
     private String transactionCategory;
-    
-    
-    //helper methods
-    public void addLoanApplication(LoanApplication loanAppl) {
-    	applications.add(loanAppl);
-	}
-    
-    public void removeEmployee(LoanApplication loanAppl) {
-    	applications.remove(loanAppl);
-	}
-    
-    
-    
-    
-    
     
 }

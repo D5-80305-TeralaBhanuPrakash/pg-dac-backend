@@ -21,6 +21,9 @@ import com.app.entities.Transaction;
 public class TransactionServiceImpl implements TransactionService{
 	
 	@Autowired
+	private LoanRepaymentService loanRepayService;
+	
+	@Autowired
 	private TransactionDao transacDao;
 	
 	@Autowired
@@ -37,8 +40,9 @@ public class TransactionServiceImpl implements TransactionService{
 		Customer cust = custDao.findById(custId).orElseThrow();
 		LoanApplication loanAppl = loanApplDao.findById(trasacDto.getApplicationId()).orElseThrow();
 		Transaction transac = mapper.map(trasacDto,Transaction.class);
-		transac.addLoanApplication(loanAppl);
+		transac.setLoanAppl(loanAppl);
 		transac.setCustomer(cust);
+		loanRepayService.updateLoanRepayment(transac);
 		transacDao.save(transac);
 		return mapper.map(transac, TransactionDTO.class);
 	}

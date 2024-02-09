@@ -30,16 +30,16 @@ public class LoanApplicationDTO {
    
     private Integer loanTerm;
 
-    
+    @JsonProperty(access = Access.READ_ONLY)
     private LocalDate applicationDate;
 
-    
+    @JsonProperty(access = Access.READ_ONLY)
     private String approvalStatus;
 
-    
+    @JsonProperty(access = Access.READ_ONLY)
     private LocalDate approvalDate;
 
-    
+    @JsonProperty(access = Access.READ_ONLY)
     private String denialReason;
 
     
@@ -48,7 +48,7 @@ public class LoanApplicationDTO {
     
     private String comments;
 
-    
+    @JsonProperty(access = Access.READ_ONLY)
     private String applicationStatus;
     
     

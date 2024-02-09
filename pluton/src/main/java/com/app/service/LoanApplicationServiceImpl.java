@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,9 @@ public class LoanApplicationServiceImpl implements LoanApplicationService{
 		LoanApplication loanAppl = mapper.map(loanApplDto, LoanApplication.class);
 		loanAppl.setCustomer(cust);
 		loanAppl.setEmploymentDetails(empDetails);
+		loanAppl.setApplicationStatus("WAITING");
+		loanAppl.setApprovalStatus("WAITING");
+		loanAppl.setApplicationDate(LocalDate.now());
 		loanApplDao.save(loanAppl);
 		return mapper.map(loanAppl, LoanApplicationDTO.class);
 	}
