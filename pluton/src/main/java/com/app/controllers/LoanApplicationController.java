@@ -16,7 +16,7 @@ import com.app.dto.LoanApplicationDTO;
 import com.app.service.LoanApplicationService;
 
 @RestController
-@RequestMapping("/customer/loanAppl")
+@RequestMapping("/loanAppl")
 @CrossOrigin(origins="http://localhost:3000")
 @Validated
 public class LoanApplicationController {
@@ -34,4 +34,13 @@ public class LoanApplicationController {
 		return loanApplService.addLoanApplicationToCustomer(custId, loanApplDto);
 	}
 	
+	@GetMapping("/admin/all")
+	public List<LoanApplicationDTO> getAllLoanApplications(){
+		return loanApplService.getAllLoanApplications();
+	}
+	
+	@PostMapping("/admin/reject/{applId}")
+	public LoanApplicationDTO rejectLoanApplication(@RequestBody String rejectReason, @PathVariable Integer applId) {
+		return loanApplService.setRejectionStatus(rejectReason,applId);
+	}
 }

@@ -10,4 +10,8 @@ public interface LoanApplicationService {
 
 	List<LoanApplicationDTO> getLoanApplicationOfEmployee(Integer custId);
 
+	List<LoanApplicationDTO> getAllLoanApplications();
+
+	LoanApplicationDTO setRejectionStatus(String rejectReason, Integer applId);
+
 }

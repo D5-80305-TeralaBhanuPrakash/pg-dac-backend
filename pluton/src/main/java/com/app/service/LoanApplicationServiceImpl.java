@@ -61,6 +61,26 @@ public class LoanApplicationServiceImpl implements LoanApplicationService{
 				.map(loanAppl -> mapper.map(loanAppl,LoanApplicationDTO.class)) //Stream <DTO>
 				.collect(Collectors.toList());//List<DTO>;
 	}
+
+	@Override
+	public List<LoanApplicationDTO> getAllLoanApplications() {
+		List<LoanApplication> loanApplList = loanApplDao.findAll();
+		return loanApplList
+				.stream() //Stream<Dept>
+				.map(loanAppl -> mapper.map(loanAppl,LoanApplicationDTO.class)) //Stream <DTO>
+				.collect(Collectors.toList());//List<DTO>;
+	}
+
+	@Override
+	public LoanApplicationDTO setRejectionStatus(String rejectReason, Integer applId) {
+		LoanApplication loanAppl = loanApplDao.findById(applId).orElseThrow();
+		loanAppl.setDenialReason(rejectReason);
+		loanAppl.setApprovalStatus("REJECTED");
+		loanAppl.setApprovalDate(LocalDate.now());
+		loanAppl.setApplicationStatus("INACTIVE");
+		loanApplDao.save(loanAppl);
+		return mapper.map(loanAppl, LoanApplicationDTO.class);
+	}
 	
 	
 
