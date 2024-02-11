@@ -2,15 +2,19 @@ package com.app.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.custom_exceptions.CustomerAlreadyRegisteredException;
+import com.app.custom_exceptions.CustomerServiceException;
 import com.app.dao.CustomerDao;
 import com.app.dto.CustomerDTO;
 import com.app.entities.Customer;
@@ -26,6 +30,9 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private ModelMapper mapper;
 	
+	@Autowired
+	private PasswordEncoder encoder;
+	
 	@Override
 	public List<CustomerDTO> getAllCustomers() {
 		// TODO Auto-generated method stub
@@ -35,10 +42,20 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO addCustomer(CustomerDTO custDto) {
-		custDto.setRegistrationDate(LocalDate.now());
-		custDto.setStatus(true);
-		Customer cust = custDao.save(mapper.map(custDto, Customer.class));
-		return mapper.map(cust, CustomerDTO.class);
+	    try {
+	    	Optional<Customer> exisCust = custDao.findByEmail(custDto.getEmail());
+	    	if(exisCust.isPresent()) {
+	    		throw new CustomerAlreadyRegisteredException("customer already registered");
+	    	}
+	    	
+	        custDto.setRegistrationDate(LocalDate.now());
+	        custDto.setStatus(true);
+	        Customer cust = custDao.save(mapper.map(custDto, Customer.class));
+	        cust.setPassword(encoder.encode(custDto.getPassword()));
+	        return mapper.map(cust, CustomerDTO.class);
+	    } catch (Exception e) {
+	        throw new CustomerServiceException("Error while adding customer: " + e.getMessage());
+	    }
 	}
 
 	@Override

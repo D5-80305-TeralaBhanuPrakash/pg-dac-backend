@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.custom_exceptions.CustomerNotFoundException;
+import com.app.custom_exceptions.LoanApplicationServiceException;
+import com.app.custom_exceptions.LoanNotFoundException;
 import com.app.dao.CustomerDao;
 import com.app.dao.EmploymentDetailsDao;
 import com.app.dao.LoanApplicationDao;
@@ -35,8 +38,8 @@ public class LoanApplicationServiceImpl implements LoanApplicationService{
 	
 	@Override
 	public LoanApplicationDTO addLoanApplicationToCustomer(Integer custId, LoanApplicationDTO loanApplDto) {
-		Customer cust = custDao.findById(custId).orElseThrow();
-		EmploymentDetails empDetails =  empDetailsDao.findById(custId).orElseThrow();
+		Customer cust = custDao.findById(custId).orElseThrow(() -> new CustomerNotFoundException("Customer not found with ID: " + custId));
+		EmploymentDetails empDetails =  empDetailsDao.findById(custId).orElseThrow(() -> new LoanApplicationServiceException("Employement Details Not Found " + custId));
 		//System.out.println(cust);
 		//System.out.println(empDetails);
 		//System.out.println(loanApplDto);
@@ -52,8 +55,8 @@ public class LoanApplicationServiceImpl implements LoanApplicationService{
 
 	@Override
 	public List<LoanApplicationDTO> getLoanApplicationOfEmployee(Integer custId) {
-		Customer cust = custDao.findById(custId).orElseThrow();
-		List<LoanApplication> loanApplList = loanApplDao.findByCustomer(cust);
+		Customer cust = custDao.findById(custId).orElseThrow(() -> new CustomerNotFoundException("Customer not found with ID: " + custId));
+		List<LoanApplication> loanApplList = loanApplDao.findByCustomer(cust).orElseThrow(()->new LoanNotFoundException("Loan Applications Not Found"));
 		
 		
 		return loanApplList
@@ -73,12 +76,18 @@ public class LoanApplicationServiceImpl implements LoanApplicationService{
 
 	@Override
 	public LoanApplicationDTO setRejectionStatus(String rejectReason, Integer applId) {
-		LoanApplication loanAppl = loanApplDao.findById(applId).orElseThrow();
+		LoanApplication loanAppl = loanApplDao.findById(applId).orElseThrow(()->new LoanNotFoundException("Loan Applications Not Found"));
 		loanAppl.setDenialReason(rejectReason);
 		loanAppl.setApprovalStatus("REJECTED");
 		loanAppl.setApprovalDate(LocalDate.now());
 		loanAppl.setApplicationStatus("INACTIVE");
 		loanApplDao.save(loanAppl);
+		return mapper.map(loanAppl, LoanApplicationDTO.class);
+	}
+
+	@Override
+	public LoanApplicationDTO getApplicationByApplicationId(Integer applId) {
+		LoanApplication loanAppl = loanApplDao.findById(applId).orElseThrow(()->new LoanNotFoundException("Loan Applications Not Found"));
 		return mapper.map(loanAppl, LoanApplicationDTO.class);
 	}
 	

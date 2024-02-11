@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.app.custom_exceptions.CustomerAlreadyRegisteredException;
 import com.app.custom_exceptions.CustomerNotFoundException;
+import com.app.custom_exceptions.CustomerServiceException;
 
 @RestControllerAdvice
 public class CustomerExceptionsHandler extends ResponseEntityExceptionHandler {
@@ -29,6 +30,18 @@ public class CustomerExceptionsHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(CustomerAlreadyRegisteredException.class)
 	public ResponseEntity<Object> handleCustomerAlreadyRegisteredException(CustomerAlreadyRegisteredException ex,
 			WebRequest request) {
+		System.out.println("inside controller advice");
+		logger.warn(ex.getMessage());
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(CustomerServiceException.class)
+	public ResponseEntity<Object> handleCustomerServiceException(CustomerServiceException ex,
+			WebRequest request) {
+		
 		logger.warn(ex.getMessage());
 		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());

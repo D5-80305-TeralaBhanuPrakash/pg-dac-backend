@@ -1,6 +1,7 @@
 package com.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ public class EmploymentDetailsController {
 	private EmploymentDetailsService empDetailsService;
 	
 	@PostMapping("/{custId}")
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
 	public EmploymentDetailsDTO addEmployerToCustomer(@PathVariable Integer custId, @RequestBody EmploymentDetailsDTO empDetailsDto) {
 		return empDetailsService.addEmployerToCustomer(custId,empDetailsDto);
 	}

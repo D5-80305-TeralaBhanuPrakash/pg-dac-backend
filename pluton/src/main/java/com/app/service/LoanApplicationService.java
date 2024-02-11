@@ -14,4 +14,6 @@ public interface LoanApplicationService {
 
 	LoanApplicationDTO setRejectionStatus(String rejectReason, Integer applId);
 
+	LoanApplicationDTO getApplicationByApplicationId(Integer applId);
+
 }

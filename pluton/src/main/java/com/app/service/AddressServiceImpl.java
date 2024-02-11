@@ -1,10 +1,14 @@
 package com.app.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.custom_exceptions.AddressNotFoundException;
 import com.app.dao.AddressDao;
 import com.app.dao.CustomerDao;
 import com.app.dto.AddressDTO;
@@ -42,6 +46,23 @@ public class AddressServiceImpl implements AddressService{
 		
 		return mapper.map(adr, AddressDTO.class);
 
+	}
+
+
+	@Override
+	public List<AddressDTO> getAllAddresses() {
+		List<Address> adrlist = adrDao.findAll();
+		
+		return adrlist.stream()
+				.map(adr -> mapper.map(adr, AddressDTO.class))
+				.collect(Collectors.toList());
+	}
+
+
+	@Override
+	public AddressDTO getCustAddress(Integer custId) {
+		Address adr = adrDao.findById(custId).orElseThrow(()->new AddressNotFoundException("address not found"));
+		return mapper.map(adr, AddressDTO.class);
 	}
 
 }

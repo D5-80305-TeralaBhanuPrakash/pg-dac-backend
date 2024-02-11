@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.app.entities.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -47,4 +48,6 @@ public class CustomerDTO {
     
     @JsonProperty(access = Access.READ_ONLY)
     private boolean status;
+    
+    private Role role;
 }

@@ -3,6 +3,9 @@ package com.app.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,22 +28,37 @@ public class LoanApplicationController {
 	private LoanApplicationService loanApplService;
 	
 	@GetMapping("/{custId}")
-	public List<LoanApplicationDTO> getLoanApplicationOfEmployee(@PathVariable Integer custId) {
-		return loanApplService.getLoanApplicationOfEmployee(custId);
-	}
-	
-	@PostMapping("/{custId}")
-	public LoanApplicationDTO addLoanApplicationToCustomer(@PathVariable Integer custId, @RequestBody LoanApplicationDTO loanApplDto) {
-		return loanApplService.addLoanApplicationToCustomer(custId, loanApplDto);
-	}
-	
-	@GetMapping("/admin/all")
-	public List<LoanApplicationDTO> getAllLoanApplications(){
-		return loanApplService.getAllLoanApplications();
-	}
-	
-	@PostMapping("/admin/reject/{applId}")
-	public LoanApplicationDTO rejectLoanApplication(@RequestBody String rejectReason, @PathVariable Integer applId) {
-		return loanApplService.setRejectionStatus(rejectReason,applId);
-	}
+	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    public ResponseEntity<List<LoanApplicationDTO>> getLoanApplicationOfEmployee(@PathVariable Integer custId) {
+        List<LoanApplicationDTO> loanApplications = loanApplService.getLoanApplicationOfEmployee(custId);
+        return ResponseEntity.ok(loanApplications);
+    }
+
+    @PostMapping("/{custId}")
+    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    public ResponseEntity<LoanApplicationDTO> addLoanApplicationToCustomer(@PathVariable Integer custId, @RequestBody LoanApplicationDTO loanApplDto) {
+        LoanApplicationDTO addedLoanApplication = loanApplService.addLoanApplicationToCustomer(custId, loanApplDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedLoanApplication);
+    }
+
+    @GetMapping("/admin/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<LoanApplicationDTO>> getAllLoanApplications() {
+        List<LoanApplicationDTO> loanApplications = loanApplService.getAllLoanApplications();
+        return ResponseEntity.ok(loanApplications);
+    }
+
+    @PostMapping("/admin/reject/{applId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LoanApplicationDTO> rejectLoanApplication(@RequestBody String rejectReason, @PathVariable Integer applId) {
+        LoanApplicationDTO rejectedLoanApplication = loanApplService.setRejectionStatus(rejectReason, applId);
+        return ResponseEntity.ok(rejectedLoanApplication);
+    }
+    
+    @GetMapping("get/{applId}")
+    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    public ResponseEntity<LoanApplicationDTO> getApplicationByApplicationId(@PathVariable Integer applId){
+    	LoanApplicationDTO applDto = loanApplService.getApplicationByApplicationId(applId);
+    	return ResponseEntity.ok(applDto);
+    }
 }
