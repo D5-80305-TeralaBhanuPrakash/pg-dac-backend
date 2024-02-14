@@ -110,5 +110,11 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService{
         return LocalDate.now().plusMonths(1); // Assuming monthly payments
     }
 
+	@Override
+	public LoanRepaymentDTO addLoanRepaymentDetails(Integer applId, LoanRepaymentDTO loanRepDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

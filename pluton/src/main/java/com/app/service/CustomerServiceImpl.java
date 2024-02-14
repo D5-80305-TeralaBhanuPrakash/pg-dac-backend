@@ -18,6 +18,7 @@ import com.app.custom_exceptions.CustomerServiceException;
 import com.app.dao.CustomerDao;
 import com.app.dto.CustomerDTO;
 import com.app.entities.Customer;
+import com.app.entities.Role;
 
 
 @Service
@@ -47,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
 	    	if(exisCust.isPresent()) {
 	    		throw new CustomerAlreadyRegisteredException("customer already registered");
 	    	}
-	    	
+	    	custDto.setRole(Role.ROLE_USER);
 	        custDto.setRegistrationDate(LocalDate.now());
 	        custDto.setStatus(true);
 	        Customer cust = custDao.save(mapper.map(custDto, Customer.class));

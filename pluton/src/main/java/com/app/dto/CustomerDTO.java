@@ -34,7 +34,7 @@ public class CustomerDTO {
 
     @NotBlank
 	@Email
-	@Size(min=5,max=20)
+	@Size(min=5)
     private String email;
 
     @JsonProperty(access =Access.WRITE_ONLY)
@@ -49,5 +49,6 @@ public class CustomerDTO {
     @JsonProperty(access = Access.READ_ONLY)
     private boolean status;
     
+    @JsonProperty(access = Access.READ_ONLY)
     private Role role;
 }

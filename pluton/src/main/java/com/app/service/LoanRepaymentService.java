@@ -11,4 +11,6 @@ public interface LoanRepaymentService {
 	LoanRepaymentDTO initializeLoanRepayment(SanctionedLoan loanAppl);
 	
 	LoanRepaymentDTO updateLoanRepayment(Transaction transaction);
+
+	LoanRepaymentDTO addLoanRepaymentDetails(Integer applId, LoanRepaymentDTO loanRepDto);
 }

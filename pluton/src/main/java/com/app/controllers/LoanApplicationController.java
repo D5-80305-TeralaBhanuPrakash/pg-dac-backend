@@ -28,14 +28,14 @@ public class LoanApplicationController {
 	private LoanApplicationService loanApplService;
 	
 	@GetMapping("/{custId}")
-	@PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<List<LoanApplicationDTO>> getLoanApplicationOfEmployee(@PathVariable Integer custId) {
         List<LoanApplicationDTO> loanApplications = loanApplService.getLoanApplicationOfEmployee(custId);
         return ResponseEntity.ok(loanApplications);
     }
 
     @PostMapping("/{custId}")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<LoanApplicationDTO> addLoanApplicationToCustomer(@PathVariable Integer custId, @RequestBody LoanApplicationDTO loanApplDto) {
         LoanApplicationDTO addedLoanApplication = loanApplService.addLoanApplicationToCustomer(custId, loanApplDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedLoanApplication);
@@ -56,7 +56,7 @@ public class LoanApplicationController {
     }
     
     @GetMapping("get/{applId}")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<LoanApplicationDTO> getApplicationByApplicationId(@PathVariable Integer applId){
     	LoanApplicationDTO applDto = loanApplService.getApplicationByApplicationId(applId);
     	return ResponseEntity.ok(applDto);

@@ -30,7 +30,7 @@ import com.app.security.JwtUtils;
 import com.app.service.CustomerService;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/user")
 @CrossOrigin(origins="http://localhost:3000")
 @Validated
 public class CustomerController {
@@ -60,7 +60,7 @@ public class CustomerController {
     // Endpoint to retrieve details of a specific customer
     // URL: http://localhost:8080/customer/{custId}
     @GetMapping("/{custId}")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<CustomerDTO> getCustomerDetails(@PathVariable Integer custId) {
         CustomerDTO customer = custService.getCustomerDetails(custId);
         if (customer != null) {
@@ -120,7 +120,7 @@ public class CustomerController {
     // Endpoint to edit customer details
     // URL: http://localhost:8080/customer/{custId}
     @PutMapping("/{custId}")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<CustomerDTO> editCustomer(@PathVariable Integer custId, @RequestBody CustomerDTO custDto) {
         CustomerDTO updatedCustomer = custService.editCustomer(custId, custDto);
         if (updatedCustomer != null) {
@@ -146,7 +146,7 @@ public class CustomerController {
     // Endpoint to retrieve customers sorted by registration date in ascending order
     // URL: http://localhost:8080/customer/sortByRegistration/asc
     @GetMapping("/sortByRegistration/asc")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<List<CustomerDTO>> getCustomersSortedByRegistrationDateAsc() {
         List<CustomerDTO> customers = custService.getCustomersSortedByRegistrationDateAsc();
         return ResponseEntity.ok(customers);
@@ -155,7 +155,7 @@ public class CustomerController {
     // Endpoint to retrieve customers sorted by registration date in descending order
     // URL: http://localhost:8080/customer/sortByRegistration/desc
     @GetMapping("/sortByRegistration/desc")
-    @PreAuthorize("hasRole('CUSTOMER') || hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<List<CustomerDTO>> getCustomersSortedByRegistrationDateDesc() {
         List<CustomerDTO> customers = custService.getCustomersSortedByRegistrationDateDesc();
         return ResponseEntity.ok(customers);

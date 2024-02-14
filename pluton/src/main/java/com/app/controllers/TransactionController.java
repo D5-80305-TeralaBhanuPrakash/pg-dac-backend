@@ -3,6 +3,7 @@ package com.app.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,17 +27,20 @@ public class TransactionController {
 	
 	//Method to get transactions of all the customers
 	@GetMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<TransactionDTO> getAllTransactions(){
 		return transacService.getAllTransactions();
 	}
 	
 	//Method to get all transactions of a specific customer
 	@GetMapping("custom/{custId}")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
 	public List<TransactionDTO> getAllTransactionOfCustomer(@PathVariable Integer custId){
 		return transacService.getAllTransactionOfCustomer(custId);
 	}
 	
 	@GetMapping("appl/{applId}")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
 	public List<TransactionDTO> getAllTransactionOfLoan(@PathVariable Integer applId){
 		return transacService.getAllTransactionOfLoan(applId);
 	}

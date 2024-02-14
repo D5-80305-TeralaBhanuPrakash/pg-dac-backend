@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,27 +30,32 @@ public class SanctionedLoanController {
 	
 	
 	@PostMapping("/{applId}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public SanctionedLoanDTO addSactionedLoan(@PathVariable Integer applId,@RequestBody SanctionedLoanDTO sancLoanDto) {
 		return sancLoanService.addSactionedLoan(applId,sancLoanDto);
 	}
 	
 	@GetMapping("/{custId}")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
 	public List<SanctionedLoanDTO> getSanctionedLoanOfCustomer(@PathVariable Integer custId) {
 		return sancLoanService.getSanctionedLoanOfCustomer(custId);
 	}
 	
 	@GetMapping("/sortByAmount/{custId}")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
 	public List<SanctionedLoanDTO> sortByAmountDisbursed(@PathVariable Integer custId){
 		return sancLoanService.sortByAmountDisbursed(custId);
 	}
 	
 	@GetMapping("/admin/all")
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<SanctionedLoanDTO> getAllSanctionedLoans(){
 		return sancLoanService.getAllSanctionedLoans();
 	}
 	
 	//url -> http://localhost:8080/admin/all?page=0&size=10
-	@GetMapping("/admin/page")
+	@GetMapping("/page")
+	@PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
     public ResponseEntity<List<SanctionedLoanDTO>> getAllSanctionedLoans(
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
@@ -58,10 +64,10 @@ public class SanctionedLoanController {
         return ResponseEntity.ok(sanctionedLoanDTOs);
     }
 	
-	@PutMapping("/{applId}")
-	public SanctionedLoanDTO updateSanctionedLoan(@PathVariable Integer applId, @RequestBody SanctionedLoanDTO sancLoanDto) {
-		return sancLoanService.updateSanctionedLoan(applId,sancLoanDto);
-	}
+//	@PutMapping("/{applId}")
+//	public SanctionedLoanDTO updateSanctionedLoan(@PathVariable Integer applId, @RequestBody SanctionedLoanDTO sancLoanDto) {
+//		return sancLoanService.updateSanctionedLoan(applId,sancLoanDto);
+//	}
 	
 	
 	

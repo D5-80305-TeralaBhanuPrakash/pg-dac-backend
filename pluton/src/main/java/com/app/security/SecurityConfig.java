@@ -34,9 +34,9 @@ public class SecurityConfig {
 		csrf()
 		.disable().
 		authorizeRequests()
-		.antMatchers("/customer/signin","/customer/register",
+		.antMatchers("/user/signin","/user/register",
 				"/v*/api-doc*/**","/swagger-ui/**").permitAll()
-		.antMatchers("/customer/all").hasRole("CUSTOMER")
+		.antMatchers("/customer/all").hasRole("USER")
 		.antMatchers("/customer/all").hasRole("ADMIN")
 		.anyRequest().authenticated()
 		.and()
