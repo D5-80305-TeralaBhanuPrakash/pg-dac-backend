@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.custom_exceptions.CustomerAlreadyRegisteredException;
+import com.app.custom_exceptions.CustomerNotFoundException;
 import com.app.custom_exceptions.CustomerServiceException;
 import com.app.dao.CustomerDao;
 import com.app.dto.CustomerDTO;
@@ -112,6 +113,12 @@ public class CustomerServiceImpl implements CustomerService {
 				.map(cust -> mapper.map(cust, CustomerDTO.class))
 				.collect(Collectors.toList());
 		
+	}
+
+	@Override
+	public CustomerDTO getCustomerByEmailAddress(String email) {
+		Customer cust = custDao.findByEmail(email).orElseThrow(()-> new CustomerNotFoundException("customer not found"));
+		return mapper.map(cust, CustomerDTO.class);
 	}
 
 }

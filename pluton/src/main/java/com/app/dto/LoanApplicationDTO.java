@@ -17,7 +17,7 @@ import lombok.ToString;
 public class LoanApplicationDTO {
 	
 	@JsonProperty(access = Access.READ_ONLY)
-	private Integer customerId;
+	private Integer loanApplicationId;
 	
 	private String loanType;
 

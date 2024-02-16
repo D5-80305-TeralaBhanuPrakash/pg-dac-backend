@@ -101,10 +101,10 @@ public class CustomerController {
             // Perform user authentication
             Authentication verifiedAuth = mgr.authenticate(
                     new UsernamePasswordAuthenticationToken(reqDTO.getEmail(), reqDTO.getPassword()));
-
+            CustomerDTO custDto = custService.getCustomerByEmailAddress(reqDTO.getEmail());
             // If authentication is successful, return a JWT token
             if (verifiedAuth.isAuthenticated()) {
-                return ResponseEntity.ok(new SigninResponse(utils.generateJwtToken(verifiedAuth), "Successful Authentication!!!"));
+                return ResponseEntity.ok(new SigninResponse(utils.generateJwtToken(verifiedAuth), custDto));
             } else {
                 // If authentication fails, return a 401 Unauthorized status code
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid user credentials");
@@ -160,6 +160,14 @@ public class CustomerController {
         List<CustomerDTO> customers = custService.getCustomersSortedByRegistrationDateDesc();
         return ResponseEntity.ok(customers);
     }
+    
+    @GetMapping("/get/{email}")
+    @PreAuthorize("hasRole('USER') || hasRole('ADMIN')")
+    public ResponseEntity<CustomerDTO> getCustomerByEmailAddress(@PathVariable String email){
+    	CustomerDTO cust = custService.getCustomerByEmailAddress(email);
+    	return ResponseEntity.ok(cust);
+    }
+    
 	
 	
 }

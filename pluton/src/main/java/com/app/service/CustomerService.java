@@ -22,4 +22,6 @@ public interface CustomerService {
 
 	List<CustomerDTO> getCustomersSortedByRegistrationDateDesc();
 
+	CustomerDTO getCustomerByEmailAddress(String email);
+
 }

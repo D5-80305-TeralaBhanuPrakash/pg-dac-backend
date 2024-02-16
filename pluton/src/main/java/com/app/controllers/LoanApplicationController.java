@@ -20,7 +20,7 @@ import com.app.service.LoanApplicationService;
 
 @RestController
 @RequestMapping("/loanAppl")
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="*")
 @Validated
 public class LoanApplicationController {
 	

@@ -11,5 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SigninResponse {
 	private String jwt;
-	private String msg;
+	private CustomerDTO user;
 }

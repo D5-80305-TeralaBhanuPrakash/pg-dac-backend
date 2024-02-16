@@ -25,6 +25,9 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthenticationFilter jwtFilter;
 	
+	@Autowired
+	private CorsFilter corsFilter;
+	
 	@Bean
 	public SecurityFilterChain authorizeRequests(HttpSecurity http) throws Exception
 	{
@@ -45,8 +48,8 @@ public class SecurityConfig {
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS).
 		and()
 		//inserting jwt filter before sec filter
-		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-	
+		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+		.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 	//configure AuthMgr as a spring bean
