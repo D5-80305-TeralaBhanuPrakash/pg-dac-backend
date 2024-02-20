@@ -12,6 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.app.custom_exceptions.CustomerAlreadyRegisteredException;
+import com.app.custom_exceptions.CustomerIdentificationServiceException;
 import com.app.custom_exceptions.CustomerNotFoundException;
 import com.app.custom_exceptions.CustomerServiceException;
 
@@ -40,6 +41,17 @@ public class CustomerExceptionsHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(CustomerServiceException.class)
 	public ResponseEntity<Object> handleCustomerServiceException(CustomerServiceException ex,
+			WebRequest request) {
+		
+		logger.warn(ex.getMessage());
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("timestamp", LocalDateTime.now());
+		body.put("message", ex.getMessage());
+		return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(CustomerIdentificationServiceException.class)
+	public ResponseEntity<Object> handleCustomerIdentificationServiceException(CustomerIdentificationServiceException ex,
 			WebRequest request) {
 		
 		logger.warn(ex.getMessage());

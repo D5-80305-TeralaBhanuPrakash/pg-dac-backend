@@ -17,7 +17,7 @@ import com.app.dto.EmploymentDetailsDTO;
 import com.app.service.EmploymentDetailsService;
 
 @RestController
-@RequestMapping("/customer/employer")
+@RequestMapping("/user/employer")
 @CrossOrigin(origins="http://localhost:3000")
 @Validated
 public class EmploymentDetailsController {

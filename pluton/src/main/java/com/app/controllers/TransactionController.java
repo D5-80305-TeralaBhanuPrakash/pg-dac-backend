@@ -17,7 +17,7 @@ import com.app.dto.TransactionDTO;
 import com.app.service.TransactionService;
 
 @RestController
-@RequestMapping("/customer/transaction")
+@RequestMapping("/transaction")
 @CrossOrigin(origins="http://localhost:3000")
 @Validated
 public class TransactionController {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.custom_exceptions.AddressNotFoundException;
+import com.app.custom_exceptions.CustomerNotFoundException;
 import com.app.dao.AddressDao;
 import com.app.dao.CustomerDao;
 import com.app.dto.AddressDTO;
@@ -32,7 +33,7 @@ public class AddressServiceImpl implements AddressService{
 	
 	@Override
 	public AddressDTO addAddressToCustomer(Integer custId, AddressDTO adrDto) {
-		Customer cust = custDao.findById(custId).orElseThrow();
+		Customer cust = custDao.findById(custId).orElseThrow(()->new CustomerNotFoundException("user doesn't exist"));
 		
 		System.out.println(cust);
 		Address adr = mapper.map(adrDto, Address.class);

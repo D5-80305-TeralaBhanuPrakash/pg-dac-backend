@@ -17,7 +17,7 @@ import com.app.dto.CustomerIdentificationDTO;
 import com.app.service.CustomerIdentificationService;
 
 @RestController
-@RequestMapping("/customer/identification")
+@RequestMapping("/user/identification")
 @CrossOrigin(origins="http://localhost:3000")
 @Validated
 public class CustomerIdentificationController {

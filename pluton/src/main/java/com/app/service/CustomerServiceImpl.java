@@ -62,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO getCustomerDetails(Integer custId) {
-		Customer cust = custDao.findById(custId).orElseThrow();
+		Customer cust = custDao.findById(custId).orElseThrow(()->new CustomerNotFoundException("customer not exist"));
 		// TODO Auto-generated method stub
 		return mapper.map(cust, CustomerDTO.class);
 	}

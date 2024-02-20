@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.app.custom_exceptions.CustomerIdentificationServiceException;
 import com.app.custom_exceptions.CustomerNotFoundException;
 import com.app.dao.CustomerDao;
 import com.app.dao.CustomerIdentificationDao;
@@ -43,7 +44,10 @@ public class CustomerIdentificationServiceImpl implements CustomerIdentification
 
 	@Override
 	public CustomerIdentificationDTO getCustomerIdentification(Integer custId) {
-		CustomerIdentificationDTO custIdenDto = mapper.map(custIdenDao.findById(custId),CustomerIdentificationDTO.class);
+
+		CustomerIdentification custIden = custIdenDao.findById(custId).orElseThrow(()-> new CustomerIdentificationServiceException("Customer Identification Not Found"));
+
+		CustomerIdentificationDTO custIdenDto = mapper.map(custIden,CustomerIdentificationDTO.class);
 		return custIdenDto;
 	}
 
